@@ -30,8 +30,13 @@ class AttractorField(Field):
     def fieldAction(self, fieldPointX, fieldPointY):#Stronger the further you are from the field
 	distX = fieldPointX - self.cenX
 	distY = fieldPointY - self.cenY
-	forceX = -distX*self.strength/100
-	forceY = distY*self.strength/100
+	distance = math.sqrt(distX*distX + distY*distY)
+	forceX = -distX*self.strength/75
+	forceY = distY*self.strength/75
+
+	if distance > 80:
+	    forceX = -self.strength*4 * distX/distance
+	    forceY = self.strength*4 * distY/distance
 	return (forceX,forceY)
 
 class RepulsorField(Field):
@@ -42,13 +47,33 @@ class RepulsorField(Field):
     def fieldAction(self, fieldPointX, fieldPointY):#Stronger the closer you get to the field
 	distX = self.cenX - fieldPointX
 	distY = self.cenY - fieldPointY
-	forceX = -self.strength/distX*50
-	forceY = self.strength/distY*50
-	if abs(distX) > 75:
-	    forceX=0
-	if abs(distY) > 75:
-	    forceY=0
+	distance = math.sqrt(distX*distX + distY*distY)
+	#forceX = -self.strength/distX*50
+	#forceY = self.strength/distY*50
+	#if abs(distX) > 75:
+	#    forceX=0
+	#if abs(distY) > 75:
+	#    forceY=0
+	forceX = -distX/distance * self.strength*30
+	forceY = distY/distance * self.strength*30
+	if distance > 85:
+	    forceX = 0
+	    forceY = 0
 	return (forceX,forceY)
+
+class WindyField(Field):
+    def __init__(self, strength, cenX, cenY):
+	Field.__init__(self, strength, cenX, cenY)
+	print "WindyField init"
+
+    def fieldAction(self, fieldPointX, fieldPointY):
+	forceX = 0
+	forceY = 0
+	distX = self.cenX - fieldPointX
+	distY = self.cenY - fieldPointY
+	if abs(distX) < 85 and abs(distY) < 85:
+	    forceY = self.strength
+	return (forceX, forceY)
 
 class Environment:
     fields = list()
@@ -120,7 +145,9 @@ class Controller:
 		    totY+=point.y
 		field = None
 		if t_id == 0:
-		    field = AttractorField(10, totX/4, totY/4)
+		    field = AttractorField(20, totX/4, totY/4)
+		elif t_id == 1:
+		    field = WindyField(-80, totX/4, totY/4)
 		else:
 		    field = RepulsorField(20, totX/4, totY/4)
 		self.environment.addField(field)
