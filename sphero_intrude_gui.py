@@ -48,12 +48,6 @@ class RepulsorField(Field):
 	distX = self.cenX - fieldPointX
 	distY = self.cenY - fieldPointY
 	distance = math.sqrt(distX*distX + distY*distY)
-	#forceX = -self.strength/distX*50
-	#forceY = self.strength/distY*50
-	#if abs(distX) > 75:
-	#    forceX=0
-	#if abs(distY) > 75:
-	#    forceY=0
 	forceX = -distX/distance * self.strength*30
 	forceY = distY/distance * self.strength*30
 	if distance > 85:
@@ -71,7 +65,7 @@ class WindyField(Field):
 	forceY = 0
 	distX = self.cenX - fieldPointX
 	distY = self.cenY - fieldPointY
-	if abs(distX) < 85 and abs(distY) < 85:
+	if abs(distX) < 115 and abs(distY) < 115:#sets a square field rather than a round one
 	    forceY = self.strength
 	return (forceX, forceY)
 
@@ -159,6 +153,7 @@ class Controller:
     def stop(self):
         self.stop = True
 
+##end of Team kappa code
 
 class SpheroIntrudeForm(QtGui.QWidget):
     controller = Controller()
