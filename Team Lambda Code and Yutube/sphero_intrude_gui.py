@@ -1,129 +1,201 @@
 #!/usr/bin/python
 
-import sys, rospy, math
+import sys, rospy, math, numpy
 from PyQt4 import QtGui, QtCore
 from geometry_msgs.msg import Twist, Pose2D
 from std_msgs.msg import ColorRGBA, Float32, Bool
 from apriltags_intrude_detector.srv import apriltags_intrude
 from apriltags_intrude_detector.srv import apriltags_info
 
-## Team kappa code
+spheroPosition = [0.0, 0.0]
 
-class Field:
-    strength = None
-    cenX = None
-    cenY = None
-    def __init__(self, strength, cenX, cenY):
-	self.strength = strength
-	self.cenX = cenX
-	self.cenY = cenY
-	print "Field init"
+# field.x - x then y - field.y
 
-    def fieldAction(self, fieldPointX, fieldPointY):
-	print "Field Action"
+# Base Field Class
+class Field_Base:
+    #r = 5.0
+    #s = 5.0
+    #point = (0.0,0.0)
+    def __init__(self, x, y, r):
+        self.point = (x, y)
+        self.r = r
+        self.s = 12 * self.r
+    def getX(self):
+        return point[0]
+    def getY(self):
+        return point[1]
 
-class AttractorField(Field):
-    def __init__(self, strength, cenX, cenY):
-	Field.__init__(self, strength, cenX, cenY)
-	print "AttractorField init"
+class Obstacle(Field_Base):
+    def __init__(self, x, y, r):
+        Field_Base.__init__(self, x, y, r)
+        self.beta = 4 #10
+        self.s = 2 * self.r
+    def getGradient(self):
+        distance = math.sqrt((self.point[0] - spheroPosition[0])**2 + (spheroPosition[1] - self.point[1])**2)
+        theta = math.atan2((self.point[1] - spheroPosition[1]), (self.point[0] - spheroPosition[0]))
+        if distance < self.r:
+            print 'A'
+            return float("-inf") * numpy.sign(math.cos(theta)), float("-inf") * numpy.sign(math.sin(theta))
+        elif (self.r <= distance and distance <= (self.s + self.r)):
+            print 'B'
+            return -1 * self.beta * (self.s + self.r - distance) * math.cos(theta), 1 * self.beta * (self.s + self.r - distance) * math.sin(theta)
+        else:
+            print 'C'
+            return 0.0, 0.0
 
-    def fieldAction(self, fieldPointX, fieldPointY):#Stronger the further you are from the field
-	distX = fieldPointX - self.cenX
-	distY = fieldPointY - self.cenY
-	distance = math.sqrt(distX*distX + distY*distY)
-	forceX = -distX*self.strength/75
-	forceY = distY*self.strength/75
 
-	if distance > 80:
-	    forceX = -self.strength*4 * distX/distance
-	    forceY = self.strength*4 * distY/distance
-	return (forceX,forceY)
+class CWTangent(Field_Base):
+    def __init__(self, x, y, r):
+        Field_Base.__init__(self, x, y, r)
+        self.alpha2 = 2
+        self.param = 50
+        self.s = 20 * self.r
+    def getGradient(self):
+        distance = math.sqrt((self.point[0] - spheroPosition[0])**2 + (spheroPosition[1] - self.point[1])**2)
+        theta = math.atan2((self.point[1] - spheroPosition[1]), (self.point[0] - spheroPosition[0]))
+        if distance < self.r:
+            print 'CW A'
+            return float("-inf") * numpy.sign(math.cos(theta)), float("-inf") * numpy.sign(math.sin(theta))
+        elif self.r <= distance and distance <= (self.s + self.r):
+            x2 = -1 * (spheroPosition[0] - self.point[0])
+            y2 = -1 * (spheroPosition[1] - self.point[1])
+            print 'CW B'
+            return self.param * y2 / (math.sqrt(x2**2 + y2**2)), self.param * x2 / (math.sqrt(x2**2 + y2**2))
+        else:
+            print 'CW C'
+            return self.alpha2 * self.s * math.cos(theta), -1 * self.alpha2 * self.s * math.sin(theta)
 
-class RepulsorField(Field):
-    def __init__(self, strength, cenX, cenY):
-	Field.__init__(self, strength, cenX, cenY)
-	print "RepulsorField init"
+class CCWTangent(Field_Base):
+    def __init__(self, x, y, r):
+        Field_Base.__init__(self, x, y, r)
+        self.alpha2 = 2
+        self.param = 50
+        self.s = 20 * self.r
+    def getGradient(self):
+        distance = math.sqrt((self.point[0] - spheroPosition[0])**2 + (spheroPosition[1] - self.point[1])**2)
+        theta = math.atan2((self.point[1] - spheroPosition[1]), (self.point[0] - spheroPosition[0]))
+        if distance < self.r:
+            print 'CCW A'
+            return float("-inf") * numpy.sign(math.cos(theta)), float("-inf") * numpy.sign(math.sin(theta))
+        elif self.r <= distance and distance <= (self.s + self.r):
+            x2 = spheroPosition[0] - self.point[0]
+            y2 = spheroPosition[1] - self.point[1]
+            print 'CCW B'
+            return self.param * y2 / (math.sqrt(x2**2 + y2**2)), self.param * x2 / (math.sqrt(x2**2 + y2**2))
+        else:
+            print 'CCW C'
+            return self.alpha2 * self.s * math.cos(theta), -1 * self.alpha2 * self.s * math.sin(theta)
 
-    def fieldAction(self, fieldPointX, fieldPointY):#Stronger the closer you get to the field
-	distX = self.cenX - fieldPointX
-	distY = self.cenY - fieldPointY
-	distance = math.sqrt(distX*distX + distY*distY)
-	forceX = -distX/distance * self.strength*30
-	forceY = distY/distance * self.strength*30
-	if distance > 85:
-	    forceX = 0
-	    forceY = 0
-	return (forceX,forceY)
 
-class WindyField(Field):
-    def __init__(self, strength, cenX, cenY):
-	Field.__init__(self, strength, cenX, cenY)
-	print "WindyField init"
+class Magnet(Field_Base):
+    def __init__(self, x, y, r):
+        Field_Base.__init__(self, x, y, r)
+        self.beta = .15
 
-    def fieldAction(self, fieldPointX, fieldPointY):
-	forceX = 0
-	forceY = 0
-	distX = self.cenX - fieldPointX
-	distY = self.cenY - fieldPointY
-	if abs(distX) < 115 and abs(distY) < 115:#sets a square field rather than a round one
-	    forceY = self.strength
-	return (forceX, forceY)
+    def getGradient(self):
+        distance = math.sqrt((self.point[0] - spheroPosition[0])**2 + (spheroPosition[1] - self.point[1])**2)
+        theta = math.atan2((self.point[1] - spheroPosition[1]), (self.point[0] - spheroPosition[0]))
+        if distance < self.r:
+            print 'A'
+            return float("-inf") * numpy.sign(math.cos(theta)), float("-inf") * numpy.sign(math.sin(theta))
+        elif (self.r <= distance and distance <= (self.s + self.r)):
+            print 'B'
+            return 1 * self.beta * (self.s + self.r - distance) * math.cos(theta), -1 * self.beta * (self.s + self.r - distance) * math.sin(theta)
+        else:
+            print 'C'
+            return 1 * self.beta * (self.s + self.r - distance) * math.cos(theta), -1 * self.beta * (self.s + self.r - distance) * math.sin(theta)
 
-class Environment:
-    fields = list()
-    def __init__(self):
-	print "Environment init"
-
-    def addField(self, field):
-	self.fields.append(field)
-	print field.cenX
-
-    def fieldAction(self, fieldPointX, fieldPointY):
-	fieldSumX = 0
-	fieldSumY = 0
-	for field in self.fields:
-	    action = field.fieldAction(fieldPointX, fieldPointY)
-	    fieldSumX += action[0]
-	    fieldSumY += action[1]
-	return (fieldSumX, fieldSumY)
-
-class Agent:
-    def __init__(self):
-	print "Agent init"
+class Goal(Field_Base):
+    def __init__(self, x, y, r):
+        Field_Base.__init__(self, x, y, r)
+        self.alpha = .4
+        self.s = 20 * self.r
+    def getGradient(self):
+        distance = math.sqrt((self.point[0] - spheroPosition[0])**2 + (spheroPosition[1] - self.point[1])**2)
+        theta = math.atan2((self.point[1] - spheroPosition[1]), (self.point[0] - spheroPosition[0]))
+        if distance < self.r:
+            print 'A'
+            return 0, 0;
+        elif self.r <= distance and distance <= (self.s + self.r):
+            print 'B'
+            self.alpha += .00125
+            return self.alpha * (distance - self.r) * math.cos(theta), self.alpha * (self.r - distance) * math.sin(theta)
+        else:
+            print 'C'
+            print self.alpha * self.s * math.cos(theta) 
+            print self.alpha * self.s * math.sin(theta)
+            return self.alpha * self.s * math.cos(theta), self.alpha * self.s * math.sin(theta)
 
 # You implement this class
 class Controller:
     stop = True # This is set to true when the stop button is pressed
-    agent = None
-    environment = None
-
     def __init__(self):
         self.cmdVelPub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
         self.trackposSub = rospy.Subscriber("tracked_pos", Pose2D, self.trackposCallback)
+        self.goal = []
+        self.field = []
+        #self.use8 = True
+        #self.oldX = -1.0
+        #self.newX = -1.0
+        #self.state = 1
 
     def trackposCallback(self, msg):
         # This function is continuously called
         if not self.stop:
-	    # print "TEAM kappa trackposCallback msg: %s"%msg
-	    if self.environment != None:
-	        fieldAction = self.environment.fieldAction(msg.x, msg.y)
-	        # print "kappa field action: %f, %f"%(fieldAction[0], fieldAction[1])
-            	twist = Twist()
-            	# Change twist.linear.x to be your desired x velocity
-            	twist.linear.x = fieldAction[0]
-            	# Change twist.linear.y to be your desired y velocity
-            	twist.linear.y = fieldAction[1]
-            	twist.linear.z = 0
-            	twist.angular.x = 0
-            	twist.angular.y = 0
-            	twist.angular.z = 0
-            	self.cmdVelPub.publish(twist)
+            global spheroPosition
+            spheroPosition[0] = msg.x
+            spheroPosition[1] = msg.y
+            twist = Twist()
+            # Change twist.linear.x and twist.linear.y to be your desired x velocity
+            # delta_x = delta_Ox + delta_Gx
+
+            #print self.goal[0].getGradient() # goal
+            #twist.linear.x, twist.linear.y = self.goal[0].getGradient()
+
+            #print self.field[0].getGradient() # obstacle
+            #twist.linear.x, twist.linear.y = self.field[0].getGradient()
+
+            # get averages
+            #if len(self.goal) > 0:
+            #    self.field.append(self.goal[0])
+            x = 0.0
+            y = 0.0
+            #if not self.use8:
+            for f in self.field:
+                x += f.getGradient()[0]
+                y += f.getGradient()[1]
+            x /= len(self.field)
+            y /= len(self.field)
+            print x, y
+            twist.linear.x, twist.linear.y = x, y
+            #else:
+                #self.newX = numpy.sign(spheroPosition[0] - self.field[0].getGradient()[0])
+                #print self.oldX, self.newX
+                #if self.oldX != self.newX:
+                #    if self.state == 4:
+                #        self.state = 1
+                 #   else:
+                 #       self.state += 1
+                #    self.oldX = self.newX
+               # print 'State: ' + str(self.state)
+               # if self.state == 1 or self.state == 2:
+               #     print 'field A'
+                 #   x, y = self.field[0].getGradient()
+               # else:
+               #     print 'field B'
+                #    x, y = self.field[1].getGradient()
+                
+            #twist.linear.x, twist.linear.y = x, y
+
+            twist.linear.z = 0
+            twist.angular.x = 0
+            twist.angular.y = 0
+            twist.angular.z = 0
+            self.cmdVelPub.publish(twist)
 
     def start(self):
         rospy.wait_for_service("apriltags_info")
         try:
-	    self.agent = Agent()
-	    self.environment = Environment()
             info_query = rospy.ServiceProxy("apriltags_info", apriltags_info)
             resp = info_query()
 
@@ -132,19 +204,26 @@ class Controller:
                 poly = resp.polygons[i]
                 # The polygon's id (just an integer, 0 is goal, all else is bad)
                 t_id = resp.ids[i]
-		totX=0
-		totY=0
-		for point in poly.points:
-		    totX+=point.x
-		    totY+=point.y
-		field = None
-		if t_id == 0:
-		    field = AttractorField(20, totX/4, totY/4)
-		elif t_id == 1:
-		    field = WindyField(-80, totX/4, totY/4)
-		else:
-		    field = RepulsorField(20, totX/4, totY/4)
-		self.environment.addField(field)
+                x = 0.0
+                y = 0.0
+                for p in poly.points:
+                    x += p.x
+                    y += p.y
+                x /= 4
+                y /= 4
+                if t_id == 0: 
+                    print "added goal"
+                    #self.goal.append(Goal(x,y, abs((poly.points[0].x - poly.points[2].x) / 2)))
+                    self.field.append(Goal(x,y, abs((poly.points[0].x - poly.points[2].x) / 2)))
+                elif t_id == 2: #CW TANGENT
+                    self.field.append(CWTangent(x,y, abs((poly.points[0].x - poly.points[2].x) / 2)))
+                elif t_id == 3: #CCW TANGENT
+                    self.field.append(CCWTangent(x,y, abs((poly.points[0].x - poly.points[2].x) / 2)))
+                else:
+                    print "added obstacle"
+                    self.field.append(Obstacle(x, y, abs((poly.points[0].x - poly.points[2].x) / 2)))
+                    #self.field.append(Magnet(x, y, abs((poly.points[0].x - poly.points[2].x) / 2)))
+
         except Exception, e:
             print "Exception: " + str(e)
         finally:
@@ -153,7 +232,6 @@ class Controller:
     def stop(self):
         self.stop = True
 
-##end of Team kappa code
 
 class SpheroIntrudeForm(QtGui.QWidget):
     controller = Controller()
@@ -321,6 +399,7 @@ class SpheroIntrudeForm(QtGui.QWidget):
         self.aprilTagsTextbox.append(str(value))
         self.aprilTagsTextbox.update()        
 
+
 if __name__ == '__main__':
 
     app = QtGui.QApplication(sys.argv)
@@ -328,3 +407,4 @@ if __name__ == '__main__':
     w.show()
     sys.exit(app.exec_())
   
+        
