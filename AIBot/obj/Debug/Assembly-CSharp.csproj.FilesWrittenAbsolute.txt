@@ -1,0 +1,13 @@
+/Users/ontario/Development/AIBot/Temp/bin/Debug/UnityEngine.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/UnityEditor.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Mono.Cecil.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Unity.DataContract.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/ontario/Development/AIBot/Temp/bin/Debug/Mono.Cecil.Mdb.dll
