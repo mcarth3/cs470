@@ -1,0 +1,146 @@
+fileFormatVersion: 2
+guid: c34f0d215d3f74685bfec0af21b32315
+timeCreated: 1462216746
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: back_front_01
+    100002: back_front_02
+    100004: back_front_03
+    100006: back_front_04
+    100008: Bone06
+    100010: Bone06_mirrored_
+    100012: Bone07
+    100014: Bone07_mirrored_
+    100016: connectBone04
+    100018: connectBone05
+    100020: droid_cylinder
+    100022: //RootNode
+    100024: left_back_01
+    100026: left_back_02
+    100028: left_back_03
+    100030: left_back_04
+    100032: left_front_01
+    100034: left_front_02
+    100036: left_front_03
+    100038: left_front_04
+    100040: right_front_01
+    100042: right_front_02
+    100044: right_front_03
+    100046: right_front_04
+    100048: Root
+    100050: spine_01
+    100052: spine_02
+    100054: spine_03
+    100056: spine_04
+    100058: spine_05
+    100060: spine_06
+    100062: up_left_0
+    100064: up_left_01
+    100066: up_right_01
+    100068: up_right_02
+    400000: back_front_01
+    400002: back_front_02
+    400004: back_front_03
+    400006: back_front_04
+    400008: Bone06
+    400010: Bone06_mirrored_
+    400012: Bone07
+    400014: Bone07_mirrored_
+    400016: connectBone04
+    400018: connectBone05
+    400020: droid_cylinder
+    400022: //RootNode
+    400024: left_back_01
+    400026: left_back_02
+    400028: left_back_03
+    400030: left_back_04
+    400032: left_front_01
+    400034: left_front_02
+    400036: left_front_03
+    400038: left_front_04
+    400040: right_front_01
+    400042: right_front_02
+    400044: right_front_03
+    400046: right_front_04
+    400048: Root
+    400050: spine_01
+    400052: spine_02
+    400054: spine_03
+    400056: spine_04
+    400058: spine_05
+    400060: spine_06
+    400062: up_left_0
+    400064: up_left_01
+    400066: up_right_01
+    400068: up_right_02
+    2300000: droid_cylinder
+    3300000: droid_cylinder
+    4300000: droid_cylinder
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

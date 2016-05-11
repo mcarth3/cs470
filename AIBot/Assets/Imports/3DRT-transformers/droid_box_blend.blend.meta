@@ -1,0 +1,130 @@
+fileFormatVersion: 2
+guid: debb918d226a64edf817230f9b381fde
+timeCreated: 1462216782
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Bone17
+    100002: Bone18
+    100004: Bone19
+    100006: //RootNode
+    100008: left_back_02
+    100010: left_back_03
+    100012: left_back_04
+    100014: left_front_01
+    100016: left_front_02
+    100018: left_front_03
+    100020: left_front_04
+    100022: left_hand_02
+    100024: MilkShape3D_Mesh
+    100026: MilkShape3D_Skeleton
+    100028: right_back_02
+    100030: right_back_03
+    100032: right_back_04
+    100034: right_front_02
+    100036: right_front_03
+    100038: right_front_04
+    100040: right_hand_02
+    100042: Root
+    100044: spine_01
+    100046: spine_02
+    100048: spine_03
+    100050: spine_05
+    100052: spine_06
+    400000: Bone17
+    400002: Bone18
+    400004: Bone19
+    400006: //RootNode
+    400008: left_back_02
+    400010: left_back_03
+    400012: left_back_04
+    400014: left_front_01
+    400016: left_front_02
+    400018: left_front_03
+    400020: left_front_04
+    400022: left_hand_02
+    400024: MilkShape3D_Mesh
+    400026: MilkShape3D_Skeleton
+    400028: right_back_02
+    400030: right_back_03
+    400032: right_back_04
+    400034: right_front_02
+    400036: right_front_03
+    400038: right_front_04
+    400040: right_hand_02
+    400042: Root
+    400044: spine_01
+    400046: spine_02
+    400048: spine_03
+    400050: spine_05
+    400052: spine_06
+    4300000: MilkShape3D_Mesh
+    7400000: Default Take
+    7400002: DefaultAction
+    9500000: //RootNode
+    13700000: MilkShape3D_Mesh
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,154 @@
+fileFormatVersion: 2
+guid: dcae7017f1a0f40b4888a40aaf2b5f94
+timeCreated: 1462216772
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: _no_name_
+    100002: _no_name_1
+    100004: _no_name_2
+    100006: _no_name_3
+    100008: _no_name_4
+    100010: _no_name_5
+    100012: _no_name_6
+    100014: _no_name_7
+    100016: _no_name_8
+    100018: droid_sphere
+    100020: //RootNode
+    100022: left_backt_01
+    100024: left_backt_02
+    100026: left_backt_03
+    100028: left_front_01
+    100030: left_front_02
+    100032: left_front_03
+    100034: left_top_01
+    100036: left_top_02
+    100038: MilkShape3D_Mesh
+    100040: MilkShape3D_Skeleton
+    100042: right_back_01
+    100044: right_back_02
+    100046: right_back_03
+    100048: right_front_01
+    100050: right_front_02
+    100052: right_front_03
+    100054: right_top_01
+    100056: right_top_02
+    100058: Root
+    100060: spine_01
+    100062: spine_02
+    100064: spine_03
+    100066: spine_04
+    100068: spine_05
+    100070: spine_06
+    100072: spine_07
+    100074: spine_08
+    100076: spine_09
+    400000: _no_name_
+    400002: _no_name_1
+    400004: _no_name_2
+    400006: _no_name_3
+    400008: _no_name_4
+    400010: _no_name_5
+    400012: _no_name_6
+    400014: _no_name_7
+    400016: _no_name_8
+    400018: droid_sphere
+    400020: //RootNode
+    400022: left_backt_01
+    400024: left_backt_02
+    400026: left_backt_03
+    400028: left_front_01
+    400030: left_front_02
+    400032: left_front_03
+    400034: left_top_01
+    400036: left_top_02
+    400038: MilkShape3D_Mesh
+    400040: MilkShape3D_Skeleton
+    400042: right_back_01
+    400044: right_back_02
+    400046: right_back_03
+    400048: right_front_01
+    400050: right_front_02
+    400052: right_front_03
+    400054: right_top_01
+    400056: right_top_02
+    400058: Root
+    400060: spine_01
+    400062: spine_02
+    400064: spine_03
+    400066: spine_04
+    400068: spine_05
+    400070: spine_06
+    400072: spine_07
+    400074: spine_08
+    400076: spine_09
+    4300000: MilkShape3D_Mesh
+    7400000: Default Take
+    7400002: DefaultAction
+    9500000: //RootNode
+    13700000: MilkShape3D_Mesh
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

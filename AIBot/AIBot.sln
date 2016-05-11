@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{66FAC542-3652-0E79-F4FE-3ECDC6EC722E}") = "AIBot", "Assembly-CSharp.csproj", "{C9384555-3D54-7BEE-C20C-4F63F5E9776B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9384555-3D54-7BEE-C20C-4F63F5E9776B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9384555-3D54-7BEE-C20C-4F63F5E9776B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9384555-3D54-7BEE-C20C-4F63F5E9776B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9384555-3D54-7BEE-C20C-4F63F5E9776B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
