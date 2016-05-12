@@ -9,6 +9,36 @@ from apriltags_intrude_detector.srv import apriltags_info
 
 ## Team kappa code for RRT
 
+class Field:
+    strength = None
+    cenX = None
+    cenY = None
+    def __init__(self, strength, cenX, cenY):
+	self.strength = strength
+	self.cenX = cenX
+	self.cenY = cenY
+	print "Field init"
+
+    def fieldAction(self, fieldPointX, fieldPointY):
+	print "Field Action"
+
+class AttractorField(Field):
+    def __init__(self, strength, cenX, cenY):
+	Field.__init__(self, strength, cenX, cenY)
+	print "AttractorField init"
+
+    def fieldAction(self, fieldPointX, fieldPointY):#Stronger the further you are from the field
+	distX = fieldPointX - self.cenX
+	distY = fieldPointY - self.cenY
+	distance = math.sqrt(distX*distX + distY*distY)
+	forceX = -distX*self.strength/75
+	forceY = distY*self.strength/75
+
+	if distance > 80:
+	    forceX = -self.strength*4 * distX/distance
+	    forceY = self.strength*4 * distY/distance
+	return (forceX,forceY)
+
 class Maze:
     nodes=list()
     def __init__(self):
@@ -77,6 +107,8 @@ class Point:
 
 class Path:
     points=list()
+    counter=0 #means that next() will get the item at 1 first, but since 0 is the starting position, that's ok
+    cost=None
     def __init__(self):
 	print "init Path"
 
@@ -86,12 +118,24 @@ class Path:
     def getPath(self):
 	return points
 
+    def next(self):
+	counter++
+	return points[counter]
+
+    def setCost(self, cost)
+	self.cost=cost
+
+    def getCost(self)
+	return cost	
+
 # You implement this class
 class Controller:
     stop = True # This is set to true when the stop button is pressed
     maze = None
     path = None
     goal = None
+    field = None
+    fieldPoint = None
 
     def __init__(self):
         self.cmdVelPub = rospy.Publisher('cmd_vel', Twist, queue_size=1)
@@ -101,18 +145,23 @@ class Controller:
         # This function is continuously called
         if not self.stop:
 	    # print "TEAM kappa trackposCallback msg: %s"%msg
-	    if self.maze != None:
+	    if self.field != None:
+		fieldAction = self.field.fieldAction(msg.x, msg.y)
 	        # print "kappa field action: 0, 0"
             	twist = Twist()
             	# Change twist.linear.x to be your desired x velocity
-            	twist.linear.x = 0
+            	twist.linear.x = fieldAction[0]
             	# Change twist.linear.y to be your desired y velocity
-            	twist.linear.y = 0
+            	twist.linear.y = fieldAction[1]
             	twist.linear.z = 0
             	twist.angular.x = 0
             	twist.angular.y = 0
             	twist.angular.z = 0
             	self.cmdVelPub.publish(twist)
+		tempPoint=Point(msg.x, msg.y)
+		if tempPoint.distanceToPoint(self.fieldPoint)<20:
+		    self.fieldPoint=path.next()
+		    self.field=AttractorField(20, msg.x, msg.y)
 
     def start(self):
 	rospy.wait_for_service("apriltags_info")
@@ -146,7 +195,7 @@ class Controller:
 	tempPath=Path()
 	tempPath.addPoint(goalPoint)
 	keepGoing=True
-	while keepGoing:
+	while keepGoing:# creates network that reaches out towards goal
 	    point=goalPoint.randomPoint(800,600)
 	    closePoint=None
 	    closeDist=3000
@@ -156,19 +205,24 @@ class Controller:
 		    if checkPathClear(point,p):
 		    	closePoint=p
 			closeDist=pDist
-	    if closePoint != None:
+	    if closePoint != None: #if there is a point in the tree that this point can connect to, add it to the tree
 		point.setNeighbor(closePoint)
 		tempPath.addPoint(point)
-		if checkPathClear(point, start):
+		if checkPathClear(point, start): #If the new point connects to the tree and the start position, we're done
 		    start.setNeighbor(point)
 		    tempPath.addPoint(start)
 		    keepGoing=False
 	newPath=Path()
-	tempPoint=tempPath.getPath()[0]
-	while tempPoint != None:
+	tempPoint=start
+	pathCost=0
+	while tempPoint != None:#path is created that goes from start to goal
 	    newPath.addPoint(tempPoint)
+	    pathCost+=tempPoint.distanceToPoint(tempPoint.getNeighbor())
 	    tempPoint=tempPoint.getNeighbor()
-    	self.path=newPath
+	if pathCost<self.path.getCost():
+	    self.path=newPath
+	    self.fieldPoint=self.path.next()#these two lines should go after the looped call to this method
+	    self.field=AttractorField(20, fieldPoint.getX(), fieldPoint.getY())
 
     def checkPathClear(self, firstPoint, secondPoint):
 	deltaX=firstPoint.getX()-secondPoint.getX()
