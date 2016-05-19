@@ -29,7 +29,7 @@ class Interface(game.ReversiGameLogic):
             else:
                 print("That is not a valid move.")
         return [x,y]
-
+        
     
     def printValid(self):
         ORDER={1:'A',2:'B',3:'C',4:'D',5:'E',6:'F',7:'G',8:'H'}
@@ -43,4 +43,5 @@ class Interface(game.ReversiGameLogic):
             printValid[0] = printValid[0] + printValid[count]
             count += 1
         print('Legal Moves: ',printValid[0])
+		
 

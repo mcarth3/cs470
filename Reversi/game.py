@@ -31,7 +31,8 @@ class ReversiGameLogic:
         self.board[4][3] = "b"
         self.board[4][4] = "w" 
 #reset the board
-    
+
+	
     def makeMove(self,xstart,ystart):
         #Place the tile on the board at xstart and ystart, and flip any of the opponent's pieces
         tilesToFlip = self.isValidMove(xstart,ystart)    
@@ -105,3 +106,5 @@ class ReversiGameLogic:
             return False
         return tilesToFlip
 #to see whether this move is a valid move or not
+
+
